@@ -33,8 +33,12 @@ const CENTER_MASK =
 const BASE_STYLE = `-webkit-mask-image:${EDGE_MASK};mask-image:${EDGE_MASK}`;
 const SPOTLIGHT = `-webkit-mask-image:${CENTER_MASK};mask-image:${CENTER_MASK}`;
 
-const allIcons = cats.flatMap((c) => c.icons);
-const initial = [...allIcons, ...allIcons];
+// "all" view: each category's icons, followed by a dot separator between groups
+const allItems = cats.flatMap((c) => [
+  ...c.icons.map((ic) => ({ type: 'icon', ...ic })),
+  { type: 'sep' },
+]);
+const initial = [...allItems, ...allItems];
 ---
 <section id="skills" class="py-24">
   <div class="max-w-6xl mx-auto px-6">
@@ -55,7 +59,15 @@ const initial = [...allIcons, ...allIcons];
     <!-- base silhouettes — visible at the edges only -->
     <div class="absolute inset-0 flex items-center" style={BASE_STYLE} aria-hidden="true">
       <div id="skill-track-base" class="flex gap-14 w-max marquee items-center opacity-60 dark:opacity-70">
-        {initial.map((s) => <img src={s.src} alt="" title={s.name} loading="lazy" class={BASE_ICON} />)}
+        {
+          initial.map((it) =>
+            it.type === 'sep' ? (
+              <span class="h-1.5 w-1.5 rounded-full bg-zinc-400/70 dark:bg-zinc-500 shrink-0" />
+            ) : (
+              <img src={it.src} alt="" title={it.name} loading="lazy" class={BASE_ICON} />
+            )
+          )
+        }
       </div>
     </div>
 
@@ -70,7 +82,15 @@ const initial = [...allIcons, ...allIcons];
     <!-- colour spotlight — visible through the centre only -->
     <div class="absolute inset-0 flex items-center pointer-events-none" style={SPOTLIGHT} aria-hidden="true">
       <div id="skill-track-color" class="flex gap-14 w-max marquee items-center">
-        {initial.map((s) => <img src={s.src} alt="" title={s.name} loading="lazy" class={COLOR_ICON} />)}
+        {
+          initial.map((it) =>
+            it.type === 'sep' ? (
+              <span class="h-1.5 w-1.5 rounded-full grad-bg shrink-0" />
+            ) : (
+              <img src={it.src} alt="" title={it.name} loading="lazy" class={COLOR_ICON} />
+            )
+          )
+        }
       </div>
     </div>
   </div>
@@ -103,20 +123,28 @@ const initial = [...allIcons, ...allIcons];
     const cards = Array.from(document.querySelectorAll('.cat-card'));
     if (!base || !color) return;
 
-    const allIcons = cats.flatMap((c) => c.icons);
     let active = null;
 
+    const SEP_BASE = '<span class="h-1.5 w-1.5 rounded-full bg-zinc-400/70 dark:bg-zinc-500 shrink-0"></span>';
+    const SEP_COLOR = '<span class="h-1.5 w-1.5 rounded-full grad-bg shrink-0"></span>';
     const img = (s, cls) => `<img src="${s.src}" alt="" title="${s.name}" loading="lazy" class="${cls}">`;
 
-    function render(key) {
+    // single category → just its icons; "all" → icons grouped by a dot separator
+    const itemsFor = (key) => {
       const cat = key ? cats.find((c) => c.key === key) : null;
-      const list = cat ? cat.icons : allIcons;
-      const grow = (fn) => {
-        const html = list.map(fn).join('');
-        return html + html + (list.length < 8 ? html + html : '');
+      return cat
+        ? cat.icons.map((ic) => ({ type: 'icon', ...ic }))
+        : cats.flatMap((c) => [...c.icons.map((ic) => ({ type: 'icon', ...ic })), { type: 'sep' }]);
+    };
+
+    function render(key) {
+      const list = itemsFor(key);
+      const build = (sep, cls) => {
+        const html = list.map((it) => (it.type === 'sep' ? sep : img(it, cls))).join('');
+        return html + html + (list.length < 10 ? html + html : '');
       };
-      base.innerHTML = grow((s) => img(s, BASE_ICON));
-      color.innerHTML = grow((s) => img(s, COLOR_ICON));
+      base.innerHTML = build(SEP_BASE, BASE_ICON);
+      color.innerHTML = build(SEP_COLOR, COLOR_ICON);
       if (hint) {
         hint.textContent = cat
           ? `${cat.name} — ${cat.count} skills · tap again to show all`
