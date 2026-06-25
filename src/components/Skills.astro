@@ -13,10 +13,15 @@ const cats = skillCategories.map((c) => ({
   name: shortName[c.name],
   count: c.skills.length,
   sample: c.skills.slice(0, 6).map((s) => s.name).join(', '),
-  icons: c.skills.map((s) => ({ src: s.src, name: s.name, invert: !!s.invert })),
+  icons: c.skills.map((s) => ({ src: s.src, name: s.name })),
 }));
 
-// Server-rendered default track = all icons (works without JS), duplicated for seamless loop.
+// Like codermana: render every logo as a theme-aware monochrome silhouette
+// (black on light, white on dark) so it's always visible; reveal its real
+// colors on hover.
+const ICON_CLASS =
+  'h-9 w-9 object-contain brightness-0 dark:invert opacity-70 hover:opacity-100 hover:[filter:none] transition duration-200';
+
 const allIcons = cats.flatMap((c) => c.icons);
 const initial = [...allIcons, ...allIcons];
 ---
@@ -39,7 +44,7 @@ const initial = [...allIcons, ...allIcons];
             title={s.name}
             loading="lazy"
             aria-hidden={i >= allIcons.length ? 'true' : undefined}
-            class:list={['h-10 w-10 object-contain opacity-75 hover:opacity-100 transition-opacity', s.invert && 'dark:invert']}
+            class={ICON_CLASS}
           />
         ))
       }
@@ -66,7 +71,7 @@ const initial = [...allIcons, ...allIcons];
   </div>
 </section>
 
-<script is:inline define:vars={{ cats }}>
+<script is:inline define:vars={{ cats, ICON_CLASS }}>
   (() => {
     const track = document.getElementById('skill-track');
     const hint = document.getElementById('skill-hint');
@@ -77,13 +82,12 @@ const initial = [...allIcons, ...allIcons];
     let active = null;
 
     const imgHTML = (s) =>
-      `<img src="${s.src}" alt="${s.name}" title="${s.name}" loading="lazy" class="h-10 w-10 object-contain opacity-75 hover:opacity-100 transition-opacity${s.invert ? ' dark:invert' : ''}">`;
+      `<img src="${s.src}" alt="${s.name}" title="${s.name}" loading="lazy" class="${ICON_CLASS}">`;
 
     function render(key) {
       const cat = key ? cats.find((c) => c.key === key) : null;
       const list = cat ? cat.icons : allIcons;
       const html = list.map(imgHTML).join('');
-      // duplicate for a seamless loop (skip duplication for tiny sets so they still fill nicely)
       track.innerHTML = html + html + (list.length < 8 ? html + html : '');
       if (hint) {
         hint.textContent = cat
