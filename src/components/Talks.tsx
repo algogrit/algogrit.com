@@ -54,6 +54,24 @@ async function fetchChannelUploads(handle: string, signal: AbortSignal): Promise
   return fetchPlaylist(uploads, signal);
 }
 
+// View counts for ranking by popularity (videos.list takes up to 50 ids/call).
+async function fetchViewCounts(ids: string[], signal: AbortSignal): Promise<Map<string, number>> {
+  const counts = new Map<string, number>();
+  for (let i = 0; i < ids.length; i += 50) {
+    const url = new URL("https://www.googleapis.com/youtube/v3/videos");
+    url.searchParams.set("part", "statistics");
+    url.searchParams.set("id", ids.slice(i, i + 50).join(","));
+    url.searchParams.set("key", API_KEY!);
+    const res = await fetch(url.toString(), { signal });
+    if (!res.ok) throw new Error(`videos ${res.status}`);
+    const data = await res.json();
+    for (const item of data.items ?? []) {
+      counts.set(item.id, Number(item.statistics?.viewCount ?? 0));
+    }
+  }
+  return counts;
+}
+
 export default function Talks() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [status, setStatus] = useState<Status>(API_KEY ? "loading" : "error");
@@ -70,7 +88,6 @@ export default function Talks() {
         ]);
         const merged: Video[] = [];
         const seen = new Set<string>();
-        // interleave playlist (talks) first, then channel uploads
         for (const r of [talks, uploads]) {
           if (r.status !== "fulfilled") continue;
           for (const v of r.value) {
@@ -79,6 +96,15 @@ export default function Talks() {
             merged.push(v);
           }
         }
+
+        // rank by popularity (view count); fall back to source order on failure
+        try {
+          const views = await fetchViewCounts(merged.map((v) => v.videoId), controller.signal);
+          merged.sort((a, b) => (views.get(b.videoId) ?? 0) - (views.get(a.videoId) ?? 0));
+        } catch (err) {
+          if ((err as Error).name === "AbortError") return;
+        }
+
         setVideos(merged.slice(0, MAX));
         setStatus(merged.length ? "ready" : "error");
       } catch (err) {
