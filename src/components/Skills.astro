@@ -21,8 +21,14 @@ const cats = skillCategories.map((c) => ({
 //  - COLOR: real brand colours, masked to a centre "spotlight".
 const BASE_ICON = 'h-9 w-9 object-contain brightness-0 dark:invert';
 const COLOR_ICON = 'h-9 w-9 object-contain';
-const SPOTLIGHT =
-  '-webkit-mask-image:linear-gradient(to right,transparent 6%,#000 30%,#000 70%,transparent 94%);mask-image:linear-gradient(to right,transparent 6%,#000 30%,#000 70%,transparent 94%)';
+// Complementary masks so the two synced layers never overlap (no ghosting):
+// silhouettes show only at the edges, colour only through the centre spotlight.
+const EDGE_MASK =
+  'linear-gradient(to right,#000 0%,#000 20%,transparent 40%,transparent 60%,#000 80%,#000 100%)';
+const CENTER_MASK =
+  'linear-gradient(to right,transparent 0%,transparent 20%,#000 40%,#000 60%,transparent 80%,transparent 100%)';
+const BASE_STYLE = `-webkit-mask-image:${EDGE_MASK};mask-image:${EDGE_MASK}`;
+const SPOTLIGHT = `-webkit-mask-image:${CENTER_MASK};mask-image:${CENTER_MASK}`;
 
 const allIcons = cats.flatMap((c) => c.icons);
 const initial = [...allIcons, ...allIcons];
@@ -35,15 +41,18 @@ const initial = [...allIcons, ...allIcons];
     </p>
   </div>
 
-  <!-- ticker: silhouette base + colour spotlight -->
+  <!-- ticker: silhouette base + colour spotlight. Both masks live on FIXED
+       (non-animated) overlays, so the spotlight stays put while identical
+       tracks scroll through it. -->
   <div class="marquee-pausable relative overflow-hidden mb-10">
-    <!-- base silhouettes -->
-    <div id="skill-track-base" class="flex gap-12 w-max marquee items-center opacity-40 dark:opacity-50">
-      {
-        initial.map((s, i) => (
-          <img src={s.src} alt={s.name} title={s.name} loading="lazy" aria-hidden={i >= allIcons.length ? 'true' : undefined} class={BASE_ICON} />
-        ))
-      }
+    <!-- sizer: gives the wrapper height (both layers are absolute) -->
+    <div class="h-9 my-5 invisible" aria-hidden="true"></div>
+
+    <!-- base silhouettes — visible at the edges only -->
+    <div class="absolute inset-0 flex items-center" style={BASE_STYLE} aria-hidden="true">
+      <div id="skill-track-base" class="flex gap-12 w-max marquee items-center opacity-60 dark:opacity-70">
+        {initial.map((s) => <img src={s.src} alt="" title={s.name} loading="lazy" class={BASE_ICON} />)}
+      </div>
     </div>
 
     <!-- light strip behind the spotlight (dark mode), aids legibility -->
@@ -54,10 +63,10 @@ const initial = [...allIcons, ...allIcons];
     >
     </div>
 
-    <!-- colour spotlight (masked to centre) -->
+    <!-- colour spotlight — visible through the centre only -->
     <div class="absolute inset-0 flex items-center pointer-events-none" style={SPOTLIGHT} aria-hidden="true">
       <div id="skill-track-color" class="flex gap-12 w-max marquee items-center">
-        {initial.map((s) => <img src={s.src} alt="" loading="lazy" class={COLOR_ICON} />)}
+        {initial.map((s) => <img src={s.src} alt="" title={s.name} loading="lazy" class={COLOR_ICON} />)}
       </div>
     </div>
   </div>
@@ -93,7 +102,7 @@ const initial = [...allIcons, ...allIcons];
     const allIcons = cats.flatMap((c) => c.icons);
     let active = null;
 
-    const img = (s, cls, alt) => `<img src="${s.src}" alt="${alt ? s.name : ''}" title="${s.name}" loading="lazy" class="${cls}">`;
+    const img = (s, cls) => `<img src="${s.src}" alt="" title="${s.name}" loading="lazy" class="${cls}">`;
 
     function render(key) {
       const cat = key ? cats.find((c) => c.key === key) : null;
@@ -102,8 +111,8 @@ const initial = [...allIcons, ...allIcons];
         const html = list.map(fn).join('');
         return html + html + (list.length < 8 ? html + html : '');
       };
-      base.innerHTML = grow((s) => img(s, BASE_ICON, true));
-      color.innerHTML = grow((s) => img(s, COLOR_ICON, false));
+      base.innerHTML = grow((s) => img(s, BASE_ICON));
+      color.innerHTML = grow((s) => img(s, COLOR_ICON));
       if (hint) {
         hint.textContent = cat
           ? `${cat.name} — ${cat.count} skills · tap again to show all`
