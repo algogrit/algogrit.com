@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { yearsOfExperience } from '../data/profile';
 
 interface Props {
   title?: string;
@@ -13,7 +14,7 @@ interface Props {
 const {
   title = 'Gaurav Agarwal · Engineering Leader & Technical Consultant',
   description =
-    'Director of Engineering with 12+ years building scalable systems, training 3000+ engineers and consulting for 35+ enterprises. Creator of CoderMana.',
+    `Director of Engineering with ${yearsOfExperience}+ years building scalable systems, training 3000+ engineers and consulting for 35+ enterprises. Creator of CoderMana.`,
   aurora = false,
   canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined,
 } = Astro.props;

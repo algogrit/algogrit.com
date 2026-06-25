@@ -4,6 +4,7 @@ import { experience } from '../data/experience';
 import { skillCategories } from '../data/skills';
 import { education } from '../data/education';
 import { community, communityNote, clients, trainingTopics, trainingNote, courseOutlinesUrl } from '../data/community';
+import { yearsOfExperience } from '../data/profile';
 
 const contacts = [
   { label: 'algogrit@gmail.com', href: 'mailto:algogrit@gmail.com' },
@@ -40,7 +41,7 @@ const last = experience.length - 1;
       <h1 class="display text-5xl md:text-6xl font-bold">Gaurav Agarwal</h1>
       <p class="mt-2 text-lg grad font-semibold">Director of Engineering · Trainer · Consultant</p>
       <p class="mt-5 max-w-2xl text-zinc-600 dark:text-zinc-300 leading-relaxed">
-        Polyglot engineer with 12+ years building distributed systems, training 3000+ engineers and
+        Polyglot engineer with {yearsOfExperience}+ years building distributed systems, training 3000+ engineers and
         consulting for 35+ enterprises. Founder of Agarwal Consulting, creator of CoderMana.
       </p>
       <div class="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-sm">
