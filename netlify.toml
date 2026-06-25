@@ -3,9 +3,10 @@
   publish = "dist"
 
 # resume.algogrit.com is served by this same site (add it as a domain alias in
-# Netlify) and 301s to the canonical /resume path.
+# Netlify) and 302s to the canonical /resume path. 302 (not 301) so browsers
+# don't permanently cache the redirect, keeping the subdomain reusable later.
 [[redirects]]
   from = "https://resume.algogrit.com/*"
   to = "https://algogrit.com/resume"
-  status = 301
+  status = 302
   force = true
