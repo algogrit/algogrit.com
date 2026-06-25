@@ -21,8 +21,12 @@ const cats = skillCategories.map((c) => ({
 //  - COLOR: real brand colours, masked to a centre "spotlight".
 // Both layers are the SAME size, so the silhouette and colour copy of an icon
 // overlap perfectly through the spotlight crossfade (clean gray→colour fade).
-const BASE_ICON = 'h-9 w-9 object-contain brightness-0 dark:invert';
-const COLOR_ICON = 'h-9 w-9 object-contain';
+// NOTE: trailing `mr-14` (not flex `gap`) on every child so each duplicated
+// copy — including its trailing gap — is exactly half the track width. That
+// makes the marquee's translateX(-50%) land on a seamless repeat boundary
+// (a flex `gap` leaves the copy-to-copy junction half a gap short → stutter).
+const BASE_ICON = 'h-9 w-9 object-contain brightness-0 dark:invert mr-14';
+const COLOR_ICON = 'h-9 w-9 object-contain mr-14';
 // Complementary masks so the two synced layers never overlap (no ghosting):
 // silhouettes show only at the edges, colour only through the centre spotlight.
 const EDGE_MASK =
@@ -56,11 +60,11 @@ const initial = [...allItems, ...allItems];
 
     <!-- base silhouettes - visible at the edges only -->
     <div class="absolute inset-0 flex items-center" style={BASE_STYLE} aria-hidden="true">
-      <div id="skill-track-base" class="flex gap-14 w-max marquee items-center opacity-60 dark:opacity-70 will-change-transform">
+      <div id="skill-track-base" class="flex w-max marquee items-center opacity-60 dark:opacity-70 will-change-transform">
         {
           initial.map((it) =>
             it.type === 'sep' ? (
-              <span class="h-1.5 w-1.5 rounded-full bg-zinc-400/70 dark:bg-zinc-500 shrink-0" />
+              <span class="h-1.5 w-1.5 rounded-full bg-zinc-400/70 dark:bg-zinc-500 shrink-0 mr-14" />
             ) : (
               <img src={it.src} alt="" title={it.name} loading="lazy" class={BASE_ICON} />
             )
@@ -79,11 +83,11 @@ const initial = [...allItems, ...allItems];
 
     <!-- colour spotlight - visible through the centre only -->
     <div class="absolute inset-0 flex items-center pointer-events-none" style={SPOTLIGHT} aria-hidden="true">
-      <div id="skill-track-color" class="flex gap-14 w-max marquee items-center will-change-transform">
+      <div id="skill-track-color" class="flex w-max marquee items-center will-change-transform">
         {
           initial.map((it) =>
             it.type === 'sep' ? (
-              <span class="h-1.5 w-1.5 rounded-full grad-bg shrink-0" />
+              <span class="h-1.5 w-1.5 rounded-full grad-bg shrink-0 mr-14" />
             ) : (
               <img src={it.src} alt="" title={it.name} loading="lazy" class={COLOR_ICON} />
             )
@@ -123,8 +127,8 @@ const initial = [...allItems, ...allItems];
 
     let active = null;
 
-    const SEP_BASE = '<span class="h-1.5 w-1.5 rounded-full bg-zinc-400/70 dark:bg-zinc-500 shrink-0"></span>';
-    const SEP_COLOR = '<span class="h-1.5 w-1.5 rounded-full grad-bg shrink-0"></span>';
+    const SEP_BASE = '<span class="h-1.5 w-1.5 rounded-full bg-zinc-400/70 dark:bg-zinc-500 shrink-0 mr-14"></span>';
+    const SEP_COLOR = '<span class="h-1.5 w-1.5 rounded-full grad-bg shrink-0 mr-14"></span>';
     const img = (s, cls) => `<img src="${s.src}" alt="" title="${s.name}" loading="lazy" class="${cls}">`;
 
     // single category → just its icons; "all" → icons grouped by a dot separator
