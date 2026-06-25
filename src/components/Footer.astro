@@ -1,8 +1,14 @@
 ---
-const today = new Date();
+const year = new Date().getFullYear();
 ---
-<footer class="py-8 px-6 border-t border-gray-200 dark:border-gray-800">
-    <div class="max-w-6xl mx-auto text-center text-gray-500 dark:text-gray-400">
-        <p>© {today.getFullYear()} Gaurav Agarwal. All rights reserved.</p>
+<footer class="px-6 py-10 border-t border-zinc-200/70 dark:border-white/5">
+  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-zinc-500 dark:text-zinc-400">
+    <p>© {year} Gaurav Agarwal. All rights reserved.</p>
+    <div class="flex items-center gap-5">
+      <a href="/resume" class="hover:text-zinc-900 dark:hover:text-white transition-colors">Résumé</a>
+      <a href="https://blog.algogrit.com" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-white transition-colors">Blog</a>
+      <a href="https://github.com/algogrit" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-white transition-colors">GitHub</a>
+      <a href="https://linkedin.com/in/algogrit" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-white transition-colors">LinkedIn</a>
     </div>
+  </div>
 </footer>

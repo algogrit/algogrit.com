@@ -1,18 +1,42 @@
 ---
+const traits = ['Problem Solver', 'Detail-Oriented', 'Adaptable', 'Team Player', 'Fast Learner'];
 ---
-<section id="about" class="py-20 px-6">
-    <div class="max-w-4xl mx-auto">
-        <h2 class="text-4xl font-bold mb-8">About Me</h2>
-        <div class="prose prose-lg dark:prose-invert max-w-none">
-            <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-                As a Director of Engineering, I bridge the gap between technical excellence and business outcomes. My journey spans over a decade of architecting distributed systems, leading engineering teams, and transforming how organizations approach software development.
-            </p>
-            <p class="text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-                Through <strong>CoderMana</strong>, I've partnered with industry leaders like Intel, Cisco, PayPal, and JP Morgan Chase to elevate their engineering practices. My training programs have impacted 3000+ engineers across 10+ industry domains, covering everything from Go and Rust to cloud-native architectures and distributed systems.
-            </p>
-            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-                I'm passionate about the craft of software engineering, sharing insights through conference talks (GopherCon Vietnam, GopherCon India), technical writing, and hands-on mentorship. Whether it's exploring Go's channel internals or debugging complex distributed systems, I believe in learning by doing and teaching by showing.
-            </p>
-        </div>
+<section id="about" class="px-6 py-24">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-[1.2fr_1fr] gap-16 items-center">
+    <div class="reveal">
+      <h2 class="display text-4xl md:text-5xl font-bold mb-8">About</h2>
+      <div class="space-y-5 text-lg leading-relaxed text-zinc-600 dark:text-zinc-300">
+        <p>
+          I'm a generalist software engineer, equally comfortable scaling up services and crafting
+          beautiful 2D &amp; 3D visualizations. I've been building robust web applications and digital
+          experiences since 2012.
+        </p>
+        <p>
+          Through <span class="grad font-semibold">CoderMana</span> I've trained 3000+ engineers and
+          consulted for 35+ enterprises — from Go and Rust to cloud-native architectures and
+          distributed systems. My approach centers on clean, maintainable code that scales, and I
+          believe in the power of simplicity and attention to detail.
+        </p>
+      </div>
+      <div class="mt-8 flex flex-wrap gap-2">
+        {
+          traits.map((t) => (
+            <span class="chip px-3 py-1 rounded-full text-sm text-zinc-700 dark:text-zinc-300">{t}</span>
+          ))
+        }
+      </div>
     </div>
+
+    <div class="reveal" style="--d:120ms">
+      <div class="p-[2px] rounded-2xl grad-bg">
+        <img
+          src="/Gaurav.jpeg"
+          alt="Gaurav Agarwal"
+          width="480"
+          height="600"
+          class="w-full aspect-[4/5] object-cover rounded-2xl"
+        />
+      </div>
+    </div>
+  </div>
 </section>

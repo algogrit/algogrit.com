@@ -1,0 +1,142 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { experience } from '../data/experience';
+import { skillCategories } from '../data/skills';
+import { education } from '../data/education';
+
+const contacts = [
+  { label: 'algogrit@gmail.com', href: 'mailto:algogrit@gmail.com' },
+  { label: 'github.com/algogrit', href: 'https://github.com/algogrit' },
+  { label: 'linkedin.com/in/algogrit', href: 'https://linkedin.com/in/algogrit' },
+  { label: 'algogrit.com', href: 'https://algogrit.com' },
+];
+---
+
+<Layout
+  title="Gaurav Agarwal — Résumé"
+  description="Résumé of Gaurav Agarwal, Director of Engineering — distributed systems, training and consulting."
+>
+  <!-- Action bar (screen only) -->
+  <div class="no-print sticky top-0 z-10 backdrop-blur-xl bg-white/70 dark:bg-zinc-950/60 border-b border-zinc-200 dark:border-white/10">
+    <div class="max-w-3xl mx-auto px-6 py-3 flex items-center justify-between">
+      <a href="/" class="text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">← algogrit.com</a>
+      <button
+        id="print-btn"
+        class="px-4 py-1.5 rounded-full text-xs font-semibold text-white grad-bg hover:opacity-90 transition-opacity inline-flex items-center gap-2"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M6 9V2h12v7" /><rect x="6" y="14" width="12" height="8" /><path d="M6 18H4a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2" />
+        </svg>
+        Print / Save as PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- Paper sheet (always light, even in dark theme) -->
+  <div class="bg-zinc-200/70 dark:bg-zinc-950 px-0 sm:px-6 py-0 sm:py-10 print:p-0 print:bg-white">
+    <main class="resume-sheet max-w-3xl mx-auto bg-white text-zinc-800 shadow-xl print:shadow-none px-8 sm:px-12 py-12">
+      <!-- Header -->
+      <header class="break-avoid border-b border-zinc-200 pb-6">
+        <h1 class="display text-4xl font-bold text-zinc-900">Gaurav Agarwal</h1>
+        <p class="mt-1 text-lg grad font-semibold">Director of Engineering · Trainer · Consultant</p>
+        <p class="mt-4 text-sm leading-relaxed text-zinc-600">
+          Polyglot engineer with 12+ years building distributed systems, training 3000+ engineers
+          and consulting for 35+ enterprises. Founder of Agarwal Consulting, creator of CoderMana.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm text-zinc-600">
+          {contacts.map((c) => (
+            <a href={c.href} class="hover:text-zinc-900">{c.label}</a>
+          ))}
+        </div>
+      </header>
+
+      <!-- Experience -->
+      <section class="mt-8">
+        <h2 class="display text-sm font-bold uppercase tracking-widest text-zinc-400 mb-5">Experience</h2>
+        <div class="space-y-7">
+          {
+            experience.map((job) => (
+              <article class="break-avoid">
+                <div class="flex items-baseline justify-between gap-4">
+                  <h3 class="text-base font-bold text-zinc-900">
+                    {job.position} ·{' '}
+                    {job.link ? <a href={job.link} class="text-zinc-700 underline decoration-zinc-300">{job.company}</a> : <span class="text-zinc-700">{job.company}</span>}
+                  </h3>
+                  <span class="shrink-0 text-xs text-zinc-500 whitespace-nowrap">{job.period}</span>
+                </div>
+                <p class="mt-1 text-sm text-zinc-600">{job.description}</p>
+                {job.achievements.length > 0 && (
+                  <ul class="mt-2 space-y-1">
+                    {job.achievements.map((a) => (
+                      <li class="flex gap-2 text-sm text-zinc-700">
+                        <span class="text-amber-600 font-bold">·</span>
+                        <span>{a}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {job.projects && job.projects.length > 0 && (
+                  <div class="mt-3 pl-3 border-l-2 border-zinc-100 space-y-2.5">
+                    {job.projects.map((p) => (
+                      <div class="break-avoid">
+                        <p class="text-sm">
+                          <span class="font-semibold text-zinc-800">{p.name}</span>
+                          <span class="text-zinc-600"> — {p.description}</span>
+                        </p>
+                        <p class="mt-0.5 text-xs text-zinc-500">{p.technologies.join(' · ')}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section class="mt-8">
+        <h2 class="display text-sm font-bold uppercase tracking-widest text-zinc-400 mb-5">Skills</h2>
+        <div class="space-y-3">
+          {
+            skillCategories.map((cat) => (
+              <div class="break-avoid grid grid-cols-[10rem_1fr] gap-3 text-sm">
+                <div class="font-semibold text-zinc-800">{cat.name}</div>
+                <div class="text-zinc-600">{cat.skills.map((s) => s.name).join(', ')}</div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section class="mt-8">
+        <h2 class="display text-sm font-bold uppercase tracking-widest text-zinc-400 mb-5">Education</h2>
+        <div class="space-y-4">
+          {
+            education.map((e) => (
+              <div class="break-avoid">
+                <div class="flex items-baseline justify-between gap-4">
+                  <h3 class="text-base font-bold text-zinc-900">{e.degree}</h3>
+                  <span class="shrink-0 text-xs text-zinc-500 whitespace-nowrap">{e.period}</span>
+                </div>
+                <p class="text-sm text-zinc-700">{e.institution}</p>
+                <p class="mt-0.5 text-sm text-zinc-600">{e.description}</p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const btn = document.getElementById('print-btn');
+      btn && btn.addEventListener('click', () => window.print());
+      if (new URLSearchParams(location.search).get('print') === '1') {
+        window.addEventListener('load', () => setTimeout(() => window.print(), 400));
+      }
+    })();
+  </script>
+</Layout>

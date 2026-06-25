@@ -1,27 +1,28 @@
 ---
-import About from '../components/About.astro';
-import Contact from '../components/Contact.astro';
-import Expertise from '../components/Expertise.astro';
-import Footer from '../components/Footer.astro';
-import Hero from '../components/Hero.astro';
+import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar';
+import Hero from '../components/Hero.astro';
+import Stats from '../components/Stats.astro';
+import About from '../components/About.astro';
+import Expertise from '../components/Expertise.astro';
+import Experience from '../components/Experience.astro';
+import Skills from '../components/Skills.astro';
 import RecentWritings from '../components/RecentWritings';
 import ResumeCTA from '../components/ResumeCTA.astro';
-import Stats from '../components/Stats.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<Layout>
-	<Navbar client:load/>
-	<Hero/>
-	<Stats/>
-	<About/>
-	<Expertise/>
-	<RecentWritings client:load/>
-	<ResumeCTA/>
-	<Contact/>
-	<Footer/>
+<Layout aurora>
+  <Navbar client:load />
+  <Hero />
+  <Stats />
+  <About />
+  <Expertise />
+  <Experience />
+  <Skills />
+  <RecentWritings client:visible />
+  <ResumeCTA />
+  <Contact />
+  <Footer />
 </Layout>

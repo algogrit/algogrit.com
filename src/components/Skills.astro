@@ -1,0 +1,108 @@
+---
+import { skillCategories } from '../data/skills';
+
+const shortName: Record<string, string> = {
+  'Programming Languages': 'Languages',
+  'Tools & Frameworks': 'Frameworks',
+  'Infrastructure & Data': 'Infra & Data',
+  Platforms: 'Platforms',
+};
+
+const cats = skillCategories.map((c) => ({
+  key: shortName[c.name].toLowerCase().replace(/[^a-z]+/g, '-'),
+  name: shortName[c.name],
+  count: c.skills.length,
+  sample: c.skills.slice(0, 6).map((s) => s.name).join(', '),
+  icons: c.skills.map((s) => ({ src: s.src, name: s.name, invert: !!s.invert })),
+}));
+
+// Server-rendered default track = all icons (works without JS), duplicated for seamless loop.
+const allIcons = cats.flatMap((c) => c.icons);
+const initial = [...allIcons, ...allIcons];
+---
+<section id="skills" class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="display text-5xl md:text-6xl font-bold mb-3 reveal">Skills.</h2>
+    <p id="skill-hint" class="text-zinc-500 dark:text-zinc-400 mb-10 reveal">
+      Languages, frameworks, infrastructure &amp; platforms — tap a category to filter.
+    </p>
+  </div>
+
+  <!-- ticker -->
+  <div class="marquee-pausable overflow-hidden mb-10">
+    <div id="skill-track" class="flex gap-12 w-max marquee items-center">
+      {
+        initial.map((s, i) => (
+          <img
+            src={s.src}
+            alt={s.name}
+            title={s.name}
+            loading="lazy"
+            aria-hidden={i >= allIcons.length ? 'true' : undefined}
+            class:list={['h-10 w-10 object-contain opacity-75 hover:opacity-100 transition-opacity', s.invert && 'dark:invert']}
+          />
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- category cards (filter buttons) -->
+  <div class="max-w-6xl mx-auto px-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    {
+      cats.map((c, i) => (
+        <button
+          type="button"
+          class="cat-card card rounded-2xl p-6 text-left reveal"
+          data-cat={c.key}
+          aria-pressed="false"
+          style={`--d:${i * 80}ms`}
+        >
+          <div class="cat-count display text-3xl font-bold grad">{c.count}</div>
+          <h3 class="font-semibold mt-1">{c.name}</h3>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">{c.sample}…</p>
+        </button>
+      ))
+    }
+  </div>
+</section>
+
+<script is:inline define:vars={{ cats }}>
+  (() => {
+    const track = document.getElementById('skill-track');
+    const hint = document.getElementById('skill-hint');
+    const cards = Array.from(document.querySelectorAll('.cat-card'));
+    if (!track) return;
+
+    const allIcons = cats.flatMap((c) => c.icons);
+    let active = null;
+
+    const imgHTML = (s) =>
+      `<img src="${s.src}" alt="${s.name}" title="${s.name}" loading="lazy" class="h-10 w-10 object-contain opacity-75 hover:opacity-100 transition-opacity${s.invert ? ' dark:invert' : ''}">`;
+
+    function render(key) {
+      const cat = key ? cats.find((c) => c.key === key) : null;
+      const list = cat ? cat.icons : allIcons;
+      const html = list.map(imgHTML).join('');
+      // duplicate for a seamless loop (skip duplication for tiny sets so they still fill nicely)
+      track.innerHTML = html + html + (list.length < 8 ? html + html : '');
+      if (hint) {
+        hint.textContent = cat
+          ? `${cat.name} — ${cat.count} skills · tap again to show all`
+          : 'Languages, frameworks, infrastructure & platforms — tap a category to filter.';
+      }
+    }
+
+    cards.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-cat');
+        active = active === key ? null : key;
+        render(active);
+        cards.forEach((b) => {
+          const on = b.getAttribute('data-cat') === active;
+          b.classList.toggle('is-active', on);
+          b.setAttribute('aria-pressed', String(on));
+        });
+      });
+    });
+  })();
+</script>

@@ -1,44 +1,53 @@
 ---
+// Inline line-icons (no emojis). 24x24 stroke icons.
+const items = [
+  {
+    title: 'Enterprise Training',
+    blurb: 'Custom technical training programs for engineering teams.',
+    points: ['Go, Rust, Python, JavaScript', 'Cloud-native development', 'Microservices architecture', 'Production-ready curriculum'],
+    icon: 'M12 14l9-5-9-5-9 5 9 5z M12 14l6.16-3.42a12 12 0 01.84 4.42 12 12 0 01-7 1 12 12 0 01-7-1 12 12 0 01.84-4.42L12 14z',
+  },
+  {
+    title: 'Architecture & Consulting',
+    blurb: 'Strategic engineering for scalability and resilience.',
+    points: ['Distributed systems design', 'Performance optimization', 'Security frameworks', 'Technical due diligence'],
+    icon: 'M3 21h18 M5 21V7l8-4v18 M19 21V11l-6-3 M9 9h.01 M9 12h.01 M9 15h.01',
+  },
+  {
+    title: 'Engineering Leadership',
+    blurb: 'Building and scaling high-performing teams.',
+    points: ['Team acceleration', 'CI/CD enablement', 'Code quality practices', 'Engineering culture'],
+    icon: 'M13 2L3 14h7l-1 8 10-12h-7l1-8z',
+  },
+];
 ---
-<section id="expertise" class="py-20 px-6 bg-gray-50 dark:bg-gray-800/50">
-    <div class="max-w-6xl mx-auto">
-        <h2 class="text-4xl font-bold mb-12 text-center">Technical Expertise</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg card-hover border border-gray-200 dark:border-gray-700">
-                <div class="text-4xl mb-4">🎓</div>
-                <h3 class="text-2xl font-bold mb-4">Enterprise Training</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-4">Custom technical training programs for engineering teams</p>
-                <ul class="space-y-2 text-gray-600 dark:text-gray-400">
-                    <li>• Go, Rust, Python, JavaScript</li>
-                    <li>• Cloud-native development</li>
-                    <li>• Microservices architecture</li>
-                    <li>• Production-ready curriculum</li>
-                </ul>
+<section id="expertise" class="px-6 py-24">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="display text-5xl md:text-6xl font-bold mb-16 reveal">
+      Technical<br /><span class="grad">Expertise.</span>
+    </h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      {
+        items.map((it, i) => (
+          <div class="gborder lift rounded-2xl glass p-8 reveal" style={`--d:${i * 120}ms`}>
+            <div class="w-12 h-12 rounded-xl grad-bg grid place-items-center mb-6">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <path d={it.icon} />
+              </svg>
             </div>
-
-            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg card-hover border border-gray-200 dark:border-gray-700">
-                <div class="text-4xl mb-4">🏗️</div>
-                <h3 class="text-2xl font-bold mb-4">Architecture & Consulting</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-4">Strategic engineering for scalability and resilience</p>
-                <ul class="space-y-2 text-gray-600 dark:text-gray-400">
-                    <li>• Distributed systems design</li>
-                    <li>• Performance optimization</li>
-                    <li>• Security frameworks</li>
-                    <li>• Technical due diligence</li>
-                </ul>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg card-hover border border-gray-200 dark:border-gray-700">
-                <div class="text-4xl mb-4">🚀</div>
-                <h3 class="text-2xl font-bold mb-4">Engineering Leadership</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-4">Building and scaling high-performing teams</p>
-                <ul class="space-y-2 text-gray-600 dark:text-gray-400">
-                    <li>• Team acceleration</li>
-                    <li>• CI/CD enablement</li>
-                    <li>• Code quality practices</li>
-                    <li>• Engineering culture</li>
-                </ul>
-            </div>
-        </div>
+            <h3 class="display text-2xl font-bold mb-3">{it.title}</h3>
+            <p class="text-zinc-600 dark:text-zinc-400 mb-5">{it.blurb}</p>
+            <ul class="space-y-2 text-sm text-zinc-500 dark:text-zinc-400">
+              {it.points.map((p) => (
+                <li class="flex gap-2.5">
+                  <span class="grad font-bold">→</span>
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
     </div>
+  </div>
 </section>

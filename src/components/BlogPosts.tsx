@@ -51,7 +51,7 @@ export default function BlogPosts() {
 
   if (loading) {
     return (
-      <p className="col-span-2 text-center text-gray-600 dark:text-gray-400">
+      <p className="col-span-2 text-center text-zinc-500 dark:text-zinc-400">
         Loading posts…
       </p>
     );
@@ -60,14 +60,14 @@ export default function BlogPosts() {
   if (error) {
     return (
       <div className="col-span-2 text-center py-8">
-        <p className="text-gray-600 dark:text-gray-400 mb-4">
+        <p className="text-zinc-500 dark:text-zinc-400 mb-4">
           Unable to load blog posts. Please visit the blog directly.
         </p>
         <a
           href="https://blog.algogrit.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-amber-600 dark:text-amber-400 hover:underline font-semibold"
+          className="grad hover:underline font-semibold"
         >
           Visit Blog →
         </a>
@@ -77,7 +77,7 @@ export default function BlogPosts() {
 
   if (posts.length === 0) {
     return (
-      <p className="col-span-2 text-center text-gray-600 dark:text-gray-400">
+      <p className="col-span-2 text-center text-zinc-500 dark:text-zinc-400">
         No posts available
       </p>
     );
@@ -105,23 +105,24 @@ export default function BlogPosts() {
         return (
           <article
             key={postUrl}
-            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg card-hover border border-gray-200 dark:border-gray-700"
+            className="gborder lift rounded-2xl glass p-7"
           >
-            <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+            <div className="text-sm text-zinc-500 dark:text-zinc-400 mb-2">
               {formattedDate}
             </div>
 
-            <h3 className="text-2xl font-bold mb-3 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+            <h3 className="display text-2xl font-bold mb-3">
               <a
                 href={postUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="hover:grad transition-colors"
               >
                 {post.title}
               </a>
             </h3>
 
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
+            <p className="text-zinc-600 dark:text-zinc-400 mb-4">
               {post.excerpt}
             </p>
 
@@ -129,7 +130,7 @@ export default function BlogPosts() {
               href={postUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-amber-600 dark:text-amber-400 hover:underline font-semibold"
+              className="grad font-semibold hover:underline"
             >
               Read more →
             </a>

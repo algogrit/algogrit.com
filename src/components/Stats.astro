@@ -1,24 +1,20 @@
 ---
+const stats = [
+  { value: '12+', label: 'Years Experience' },
+  { value: '3000+', label: 'Engineers Trained' },
+  { value: '35+', label: 'Enterprise Clients' },
+  { value: '14+', label: 'Languages' },
+];
 ---
-<section class="py-16 px-6 bg-gray-50 dark:bg-gray-800/50">
-    <div class="max-w-6xl mx-auto">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="text-center">
-                <div class="text-4xl font-bold text-amber-600 dark:text-amber-400 mb-2">12+</div>
-                <div class="text-gray-600 dark:text-gray-400">Years Experience</div>
-            </div>
-            <div class="text-center">
-                <div class="text-4xl font-bold text-amber-600 dark:text-amber-400 mb-2">3000+</div>
-                <div class="text-gray-600 dark:text-gray-400">Engineers Trained</div>
-            </div>
-            <div class="text-center">
-                <div class="text-4xl font-bold text-amber-600 dark:text-amber-400 mb-2">35+</div>
-                <div class="text-gray-600 dark:text-gray-400">Enterprise Clients</div>
-            </div>
-            <div class="text-center">
-                <div class="text-4xl font-bold text-amber-600 dark:text-amber-400 mb-2">14+</div>
-                <div class="text-gray-600 dark:text-gray-400">Languages</div>
-            </div>
+<section class="px-6 py-24">
+  <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+    {
+      stats.map((s, i) => (
+        <div class="reveal" style={`--d:${i * 80}ms`}>
+          <div class="display text-5xl md:text-6xl font-bold grad">{s.value}</div>
+          <div class="mt-2 text-zinc-500 dark:text-zinc-400">{s.label}</div>
         </div>
-    </div>
+      ))
+    }
+  </div>
 </section>

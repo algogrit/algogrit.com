@@ -1,31 +1,69 @@
 ---
 ---
-<section class="pt-32 pb-20 px-6">
-    <div class="max-w-6xl mx-auto">
-        <div class="flex flex-col md:flex-row items-center gap-12">
-            <div class="flex-1">
-                <div class="text-sm font-semibold text-amber-600 dark:text-amber-400 mb-4">🙏 Namaste!</div>
-                <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-                    <span class="gradient-text">Engineering Leader</span>, <br>
-                    Trainer & Technical Consultant
-                </h1>
-                <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
-                    Director of Engineering with 12+ years building scalable systems, training 3000+ engineers, and consulting for 35+ enterprises. Creator of <span class="font-semibold text-amber-600 dark:text-amber-400">CoderMana</span>.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="https://codermana.com" target="_blank" class="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-semibold transition-colors">
-                        View CoderMana →
-                    </a>
-                    <a href="https://blog.algogrit.com" target="_blank" class="px-6 py-3 border-2 border-gray-300 dark:border-gray-700 hover:border-amber-600 dark:hover:border-amber-400 rounded-lg font-semibold transition-colors">
-                        Read My Blog
-                    </a>
-                </div>
-            </div>
-            <div class="flex-1 flex justify-center">
-                <div class="w-64 h-64 bg-linear-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center text-white text-8xl font-bold shadow-2xl">
-                    GA
-                </div>
-            </div>
-        </div>
+<header id="hero" class="relative min-h-screen flex items-center px-6 pt-28 pb-16">
+  <div class="spotlight absolute inset-0 -z-[1]" id="hero-spot"></div>
+
+  <div class="max-w-6xl mx-auto w-full">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-sm font-medium mb-8 reveal is-visible">
+      <span class="h-2 w-2 rounded-full grad-bg animate-pulse"></span>
+      Available for consulting &amp; training
     </div>
-</section>
+
+    <h1 class="display font-bold leading-[0.88] text-6xl sm:text-8xl md:text-[8.5rem] reveal is-visible" style="--d:60ms">
+      ENGINEERING<br />
+      <span class="grad grad-anim">LEADER</span> <span class="text-zinc-400 dark:text-zinc-600">&amp;</span><br />
+      EDUCATOR<span class="grad">.</span>
+    </h1>
+
+    <div class="mt-12 flex flex-col lg:flex-row lg:items-end justify-between gap-10">
+      <p class="max-w-xl text-lg md:text-2xl text-zinc-600 dark:text-zinc-300 leading-relaxed reveal is-visible" style="--d:140ms">
+        Director of Engineering with 12+ years building scalable systems, training
+        <span class="grad font-semibold">3000+ engineers</span> and consulting for 35+ enterprises.
+        Creator of CoderMana.
+      </p>
+
+      <div class="flex items-center gap-4 reveal is-visible" style="--d:200ms">
+        <div class="p-[2px] rounded-2xl grad-bg grad-anim shrink-0">
+          <img
+            src="/Gaurav.jpeg"
+            alt="Gaurav Agarwal"
+            width="112"
+            height="112"
+            class="w-24 h-24 md:w-28 md:h-28 rounded-2xl object-cover"
+          />
+        </div>
+        <div class="flex flex-col gap-3">
+          <a
+            href="https://codermana.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-6 py-3 rounded-full text-white font-semibold grad-bg hover:opacity-90 transition-opacity text-center whitespace-nowrap"
+          >
+            View CoderMana →
+          </a>
+          <a
+            href="https://blog.algogrit.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-6 py-3 rounded-full font-semibold glass hover:scale-[1.03] transition-transform text-center whitespace-nowrap"
+          >
+            Read my blog
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    const hero = document.getElementById('hero');
+    const spot = document.getElementById('hero-spot');
+    if (!hero || !spot || window.matchMedia('(pointer: coarse)').matches) return;
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      spot.style.setProperty('--mx', e.clientX - r.left + 'px');
+      spot.style.setProperty('--my', e.clientY - r.top + 'px');
+    });
+  })();
+</script>

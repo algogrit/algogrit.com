@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# resume.algogrit.com is served by this same site (add it as a domain alias in
+# Netlify) and 301s to the canonical /resume path.
+[[redirects]]
+  from = "https://resume.algogrit.com/*"
+  to = "https://algogrit.com/resume"
+  status = 301
+  force = true
