@@ -44,8 +44,17 @@ body {
 /* ---- aurora background blobs ---- */
 .aurora { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
 .orbit { position: absolute; inset: 0; will-change: transform; }
-.blob { position: absolute; border-radius: 9999px; filter: blur(80px); opacity: .55; mix-blend-mode: screen; }
-html:not(.dark) .blob { opacity: .3; mix-blend-mode: multiply; }
+/* No mix-blend-mode: blending blurred full-screen layers re-composites every
+   scroll frame and is the main source of jank. Plain translucent glows instead. */
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(64px);
+  opacity: .45;
+  will-change: transform;
+  transform: translateZ(0);
+}
+html:not(.dark) .blob { opacity: .3; }
 .blob-1 { width: 46rem; height: 46rem; background: var(--g1); top: -12rem; left: -8rem; animation: float-1 18s ease-in-out infinite; }
 .blob-2 { width: 40rem; height: 40rem; background: var(--g3); top: -6rem; right: -10rem; animation: float-2 22s ease-in-out infinite; }
 .blob-3 { width: 38rem; height: 38rem; background: var(--g4); top: 34rem; left: 30%; animation: float-3 26s ease-in-out infinite; }
@@ -60,9 +69,9 @@ html:not(.dark) .blob { opacity: .3; mix-blend-mode: multiply; }
 
 /* ---- glass surface ---- */
 .glass {
-  background: rgba(255, 255, 255, .55);
+  background: rgba(255, 255, 255, .65);
   border: 1px solid rgba(0, 0, 0, .06);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
 }
 html.dark .glass {
   background: rgba(24, 24, 27, .45);

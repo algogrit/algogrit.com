@@ -19,11 +19,10 @@ const cats = skillCategories.map((c) => ({
 // Two synced marquee layers (like codermana):
 //  - BASE: theme-aware monochrome silhouettes (always visible), faded.
 //  - COLOR: real brand colours, masked to a centre "spotlight".
+// Both layers are the SAME size, so the silhouette and colour copy of an icon
+// overlap perfectly through the spotlight crossfade (clean gray→colour fade).
 const BASE_ICON = 'h-9 w-9 object-contain brightness-0 dark:invert';
-// scale-[1.4] zooms the colour layer via transform only (no layout change),
-// so the icon appears to grow as it enters the centre spotlight while the two
-// tracks stay perfectly width-matched / in sync.
-const COLOR_ICON = 'h-9 w-9 object-contain scale-[1.4] drop-shadow-lg';
+const COLOR_ICON = 'h-9 w-9 object-contain';
 // Complementary masks so the two synced layers never overlap (no ghosting):
 // silhouettes show only at the edges, colour only through the centre spotlight.
 const EDGE_MASK =
@@ -52,13 +51,12 @@ const initial = [...allItems, ...allItems];
        (non-animated) overlays, so the spotlight stays put while identical
        tracks scroll through it. -->
   <div class="marquee-pausable relative overflow-hidden mb-10">
-    <!-- sizer: gives the wrapper height (both layers are absolute);
-         tall enough for the zoomed centre icons not to clip -->
-    <div class="h-20 invisible" aria-hidden="true"></div>
+    <!-- sizer: gives the wrapper height (both layers are absolute) -->
+    <div class="h-12 invisible" aria-hidden="true"></div>
 
     <!-- base silhouettes — visible at the edges only -->
     <div class="absolute inset-0 flex items-center" style={BASE_STYLE} aria-hidden="true">
-      <div id="skill-track-base" class="flex gap-14 w-max marquee items-center opacity-60 dark:opacity-70">
+      <div id="skill-track-base" class="flex gap-14 w-max marquee items-center opacity-60 dark:opacity-70 will-change-transform">
         {
           initial.map((it) =>
             it.type === 'sep' ? (
@@ -81,7 +79,7 @@ const initial = [...allItems, ...allItems];
 
     <!-- colour spotlight — visible through the centre only -->
     <div class="absolute inset-0 flex items-center pointer-events-none" style={SPOTLIGHT} aria-hidden="true">
-      <div id="skill-track-color" class="flex gap-14 w-max marquee items-center">
+      <div id="skill-track-color" class="flex gap-14 w-max marquee items-center will-change-transform">
         {
           initial.map((it) =>
             it.type === 'sep' ? (
