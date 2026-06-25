@@ -128,7 +128,7 @@ export default function Talks() {
                 href={watchUrl(v.videoId)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group card rounded-2xl overflow-hidden reveal"
+                className="group card rounded-2xl overflow-hidden"
               >
                 <div className="relative aspect-video overflow-hidden bg-zinc-200 dark:bg-white/5">
                   <img
@@ -151,12 +151,12 @@ export default function Talks() {
 
         {status === "error" && (
           <div className="grid sm:grid-cols-2 gap-5">
-            <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="gborder lift rounded-2xl glass p-8 reveal">
+            <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="gborder lift rounded-2xl glass p-8">
               <h3 className="display text-2xl font-bold mb-2">CoderMana on YouTube</h3>
               <p className="text-zinc-600 dark:text-zinc-400">Talks, tutorials and deep-dives on Go, Rust, Kubernetes and more.</p>
               <span className="grad font-semibold mt-4 inline-block">Watch @codermana →</span>
             </a>
-            <a href={PLAYLIST_URL} target="_blank" rel="noopener noreferrer" className="gborder lift rounded-2xl glass p-8 reveal" style={{ ["--d" as string]: "100ms" }}>
+            <a href={PLAYLIST_URL} target="_blank" rel="noopener noreferrer" className="gborder lift rounded-2xl glass p-8">
               <h3 className="display text-2xl font-bold mb-2">Conference talks</h3>
               <p className="text-zinc-600 dark:text-zinc-400">GopherCon and meetup talks, collected as a playlist.</p>
               <span className="grad font-semibold mt-4 inline-block">Watch the playlist →</span>
