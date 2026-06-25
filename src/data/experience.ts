@@ -33,8 +33,19 @@ export const experience: ExperienceItem[] = [
     current: true,
     projects: [
       {
+        name: 'Products',
+        description:
+          'Building SaaS products in the space of near-realtime monitoring, data ingestion and content publishing.',
+        technologies: ['Python', 'React', 'Ruby', 'Go', 'JavaScript'],
+      },
+      {
+        name: 'Trainings',
+        description:
+          'Delivered world-class training on Go, Rust, Elixir, C++, Data Engineering, Distributed Systems Design, Docker, Kubernetes, Terraform, Cloud - AWS, GCP & Azure, Ruby, Python, Java, Cilium, and more for clients all over Asia, America, Europe, Africa & Australia.',
+        technologies: ['Go', 'Rust', 'Elixir', 'C++', 'Distributed Systems', 'Docker', 'Kubernetes', 'Terraform', 'AWS', 'GCP', 'Ruby', 'Python', 'Java', 'Cilium'],
+      },
+      {
         name: 'Roll',
-        link: 'https://tryroll.com',
         description:
           'Member of the core technical team. Led the backend and SRE team. Worked closely with stake holders to build and deploy new features.',
         technologies: ['Go', 'Kubernetes', 'Helm', 'RDS', 'Terraform', 'ElasticSearch', 'DataDog', 'Vault', 'AWS', 'ORY Hydra', 'CircleCI', 'GitHub Actions', 'Twilio', 'OIDC'],
@@ -44,18 +55,6 @@ export const experience: ExperienceItem[] = [
         description:
           'Building graphQL based APIs to power the frontend. Working closely with stakeholders for feature development. Managing and transforming the team to a agile process.',
         technologies: ['Go', 'GraphQL', 'Apollo.js', 'Postgres'],
-      },
-      {
-        name: 'Trainings',
-        description:
-          'Delivered world-class training on Go, Rust, Elixir, C++, Data Engineering, Distributed Systems Design, Docker, Kubernetes, Terraform, Cloud - AWS, GCP & Azure, Ruby, Python, Java, Cilium, and more for clients all over Asia, America, Europe, Africa & Australia.',
-        technologies: ['Go', 'Rust', 'Elixir', 'C++', 'Distributed Systems', 'Docker', 'Kubernetes', 'Terraform', 'AWS', 'GCP', 'Ruby', 'Python', 'Java', 'Cilium'],
-      },
-      {
-        name: 'Products',
-        description:
-          'Building SaaS products in the space of near-realtime monitoring, data ingestion and content publishing.',
-        technologies: ['Python', 'React', 'Ruby', 'Go', 'JavaScript'],
       },
     ],
   },
