@@ -16,11 +16,13 @@ const cats = skillCategories.map((c) => ({
   icons: c.skills.map((s) => ({ src: s.src, name: s.name })),
 }));
 
-// Like codermana: render every logo as a theme-aware monochrome silhouette
-// (black on light, white on dark) so it's always visible; reveal its real
-// colors on hover.
-const ICON_CLASS =
-  'h-9 w-9 object-contain brightness-0 dark:invert opacity-70 hover:opacity-100 hover:[filter:none] transition duration-200';
+// Two synced marquee layers (like codermana):
+//  - BASE: theme-aware monochrome silhouettes (always visible), faded.
+//  - COLOR: real brand colours, masked to a centre "spotlight".
+const BASE_ICON = 'h-9 w-9 object-contain brightness-0 dark:invert';
+const COLOR_ICON = 'h-9 w-9 object-contain';
+const SPOTLIGHT =
+  '-webkit-mask-image:linear-gradient(to right,transparent 6%,#000 30%,#000 70%,transparent 94%);mask-image:linear-gradient(to right,transparent 6%,#000 30%,#000 70%,transparent 94%)';
 
 const allIcons = cats.flatMap((c) => c.icons);
 const initial = [...allIcons, ...allIcons];
@@ -33,21 +35,30 @@ const initial = [...allIcons, ...allIcons];
     </p>
   </div>
 
-  <!-- ticker -->
-  <div class="marquee-pausable overflow-hidden mb-10">
-    <div id="skill-track" class="flex gap-12 w-max marquee items-center">
+  <!-- ticker: silhouette base + colour spotlight -->
+  <div class="marquee-pausable relative overflow-hidden mb-10">
+    <!-- base silhouettes -->
+    <div id="skill-track-base" class="flex gap-12 w-max marquee items-center opacity-40 dark:opacity-50">
       {
         initial.map((s, i) => (
-          <img
-            src={s.src}
-            alt={s.name}
-            title={s.name}
-            loading="lazy"
-            aria-hidden={i >= allIcons.length ? 'true' : undefined}
-            class={ICON_CLASS}
-          />
+          <img src={s.src} alt={s.name} title={s.name} loading="lazy" aria-hidden={i >= allIcons.length ? 'true' : undefined} class={BASE_ICON} />
         ))
       }
+    </div>
+
+    <!-- light strip behind the spotlight (dark mode), aids legibility -->
+    <div
+      class="absolute inset-0 hidden dark:block pointer-events-none"
+      style="background:linear-gradient(to right,transparent 32%,rgba(255,255,255,.06) 45%,rgba(255,255,255,.06) 55%,transparent 68%)"
+      aria-hidden="true"
+    >
+    </div>
+
+    <!-- colour spotlight (masked to centre) -->
+    <div class="absolute inset-0 flex items-center pointer-events-none" style={SPOTLIGHT} aria-hidden="true">
+      <div id="skill-track-color" class="flex gap-12 w-max marquee items-center">
+        {initial.map((s) => <img src={s.src} alt="" loading="lazy" class={COLOR_ICON} />)}
+      </div>
     </div>
   </div>
 
@@ -71,24 +82,28 @@ const initial = [...allIcons, ...allIcons];
   </div>
 </section>
 
-<script is:inline define:vars={{ cats, ICON_CLASS }}>
+<script is:inline define:vars={{ cats, BASE_ICON, COLOR_ICON }}>
   (() => {
-    const track = document.getElementById('skill-track');
+    const base = document.getElementById('skill-track-base');
+    const color = document.getElementById('skill-track-color');
     const hint = document.getElementById('skill-hint');
     const cards = Array.from(document.querySelectorAll('.cat-card'));
-    if (!track) return;
+    if (!base || !color) return;
 
     const allIcons = cats.flatMap((c) => c.icons);
     let active = null;
 
-    const imgHTML = (s) =>
-      `<img src="${s.src}" alt="${s.name}" title="${s.name}" loading="lazy" class="${ICON_CLASS}">`;
+    const img = (s, cls, alt) => `<img src="${s.src}" alt="${alt ? s.name : ''}" title="${s.name}" loading="lazy" class="${cls}">`;
 
     function render(key) {
       const cat = key ? cats.find((c) => c.key === key) : null;
       const list = cat ? cat.icons : allIcons;
-      const html = list.map(imgHTML).join('');
-      track.innerHTML = html + html + (list.length < 8 ? html + html : '');
+      const grow = (fn) => {
+        const html = list.map(fn).join('');
+        return html + html + (list.length < 8 ? html + html : '');
+      };
+      base.innerHTML = grow((s) => img(s, BASE_ICON, true));
+      color.innerHTML = grow((s) => img(s, COLOR_ICON, false));
       if (hint) {
         hint.textContent = cat
           ? `${cat.name} — ${cat.count} skills · tap again to show all`
