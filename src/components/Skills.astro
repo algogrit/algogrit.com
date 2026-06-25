@@ -19,10 +19,11 @@ const cats = skillCategories.map((c) => ({
 // Two synced marquee layers (like codermana):
 //  - BASE: theme-aware monochrome silhouettes (always visible), faded.
 //  - COLOR: real brand colours, masked to a centre "spotlight".
-// A dock-style magnify (JS, below) scales every icon by its distance from the
-// centre — applied to BOTH layers, so silhouette + colour copies always match.
-const BASE_ICON = 'h-9 w-9 object-contain brightness-0 dark:invert origin-center will-change-transform';
-const COLOR_ICON = 'h-9 w-9 object-contain drop-shadow-lg origin-center will-change-transform';
+const BASE_ICON = 'h-9 w-9 object-contain brightness-0 dark:invert';
+// scale-[1.4] zooms the colour layer via transform only (no layout change),
+// so the icon appears to grow as it enters the centre spotlight while the two
+// tracks stay perfectly width-matched / in sync.
+const COLOR_ICON = 'h-9 w-9 object-contain scale-[1.4] drop-shadow-lg';
 // Complementary masks so the two synced layers never overlap (no ghosting):
 // silhouettes show only at the edges, colour only through the centre spotlight.
 const EDGE_MASK =
@@ -128,7 +129,6 @@ const initial = [...allIcons, ...allIcons];
         const key = btn.getAttribute('data-cat');
         active = active === key ? null : key;
         render(active);
-        measure();
         cards.forEach((b) => {
           const on = b.getAttribute('data-cat') === active;
           b.classList.toggle('is-active', on);
@@ -136,57 +136,5 @@ const initial = [...allIcons, ...allIcons];
         });
       });
     });
-
-    // ---- macOS dock-style magnify ----
-    // Each icon scales by its distance from the ticker's centre. Both tracks
-    // are width-identical & synced, so the silhouette and colour copy of any
-    // icon share a position → share a scale → stay matched.
-    const wrap = document.querySelector('#skills .marquee-pausable');
-    const tracks = [base, color];
-    const MIN = 0.7; // edge size
-    const MAX = 1.6; // centre size
-    let items = [];
-    let wrapLeft = 0;
-    let center = 0;
-    let radius = 320;
-
-    const smoothstep = (t) => t * t * (3 - 2 * t);
-
-    function measure() {
-      if (!wrap) return;
-      const r = wrap.getBoundingClientRect();
-      wrapLeft = r.left;
-      center = r.left + r.width / 2;
-      radius = Math.max(140, r.width * 0.34);
-      items = tracks.flatMap((t) =>
-        Array.from(t.querySelectorAll('img')).map((el) => ({
-          el,
-          track: t,
-          mid: el.offsetLeft + el.offsetWidth / 2,
-        }))
-      );
-    }
-
-    function frame() {
-      // batch reads (one matrix per track) then batch writes (no layout thrash)
-      const tx = new Map();
-      for (const t of tracks) {
-        const tr = getComputedStyle(t).transform;
-        tx.set(t, tr && tr !== 'none' ? new DOMMatrixReadOnly(tr).m41 : 0);
-      }
-      for (const it of items) {
-        const x = wrapLeft + tx.get(it.track) + it.mid;
-        const d = Math.min(1, Math.abs(x - center) / radius);
-        const k = MAX - (MAX - MIN) * smoothstep(d);
-        it.el.style.transform = `scale(${k.toFixed(3)})`;
-      }
-      raf = requestAnimationFrame(frame);
-    }
-
-    let raf = 0;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    measure();
-    window.addEventListener('resize', measure, { passive: true });
-    if (!reduce) raf = requestAnimationFrame(frame);
   })();
 </script>
