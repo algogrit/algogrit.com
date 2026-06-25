@@ -60,14 +60,42 @@ const {
     {
       aurora && (
         <div class="aurora" aria-hidden="true">
-          <div class="blob blob-1" />
-          <div class="blob blob-2" />
-          <div class="blob blob-3" />
+          <div class="orbit" data-speed="-0.12"><div class="blob blob-1" /></div>
+          <div class="orbit" data-speed="0.20"><div class="blob blob-2" /></div>
+          <div class="orbit" data-speed="0.34"><div class="blob blob-3" /></div>
         </div>
       )
     }
 
     <slot />
+
+    <!-- Aurora scroll parallax -->
+    <script is:inline>
+      (() => {
+        const orbits = document.querySelectorAll('.orbit');
+        if (!orbits.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        let ticking = false;
+        const update = () => {
+          const y = window.scrollY;
+          orbits.forEach((o) => {
+            const s = parseFloat(o.getAttribute('data-speed')) || 0.1;
+            o.style.transform = `translate3d(0, ${y * s}px, 0)`;
+          });
+          ticking = false;
+        };
+        window.addEventListener(
+          'scroll',
+          () => {
+            if (!ticking) {
+              requestAnimationFrame(update);
+              ticking = true;
+            }
+          },
+          { passive: true }
+        );
+        update();
+      })();
+    </script>
 
     <!-- Scroll reveal -->
     <script is:inline>

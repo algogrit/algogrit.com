@@ -1,5 +1,6 @@
 ---
 const traits = ['Problem Solver', 'Detail-Oriented', 'Adaptable', 'Team Player', 'Fast Learner'];
+const trainedAt = ['Intel', 'Cisco', 'PayPal', 'JP Morgan Chase'];
 ---
 <section id="about" class="px-6 py-24">
   <div class="max-w-6xl mx-auto grid md:grid-cols-[1.2fr_1fr] gap-16 items-center">
@@ -24,6 +25,13 @@ const traits = ['Problem Solver', 'Detail-Oriented', 'Adaptable', 'Team Player',
             <span class="chip px-3 py-1 rounded-full text-sm text-zinc-700 dark:text-zinc-300">{t}</span>
           ))
         }
+      </div>
+
+      <div class="mt-10">
+        <div class="text-xs uppercase tracking-widest text-zinc-400 mb-3">Trained engineers at</div>
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 display text-xl font-bold text-zinc-400 dark:text-zinc-500">
+          {trainedAt.map((c) => <span>{c}</span>)}
+        </div>
       </div>
     </div>
 

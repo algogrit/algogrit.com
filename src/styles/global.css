@@ -43,6 +43,7 @@ body {
 
 /* ---- aurora background blobs ---- */
 .aurora { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
+.orbit { position: absolute; inset: 0; will-change: transform; }
 .blob { position: absolute; border-radius: 9999px; filter: blur(80px); opacity: .55; mix-blend-mode: screen; }
 html:not(.dark) .blob { opacity: .3; mix-blend-mode: multiply; }
 .blob-1 { width: 46rem; height: 46rem; background: var(--g1); top: -12rem; left: -8rem; animation: float-1 18s ease-in-out infinite; }
@@ -131,18 +132,44 @@ html.dark .card { background: rgba(255, 255, 255, .02); border-color: rgba(255, 
 }
 
 /* ============================================================
-   PRINT — used by /resume to produce a clean light PDF
+   PRINT — /resume only. Same layout as the site, flattened to a
+   compact, continuous light document (no per-section page breaks).
    ============================================================ */
 @media print {
-  @page { margin: 1.2cm; }
-  :root, html, html.dark { color-scheme: light; }
-  html.dark body, body { background: #fff !important; color: #111 !important; }
-  .no-print { display: none !important; }
-  .grad, .grad-anim {
-    -webkit-text-fill-color: #b45309 !important;
-    color: #b45309 !important;
-    background: none !important;
+  @page { margin: 1.3cm; }
+
+  html, body { background: #fff !important; }
+  nav, .aurora, .no-print { display: none !important; }
+
+  /* flatten the site styling to ink-on-paper */
+  .resume-doc, .resume-doc * {
+    color: #18181b !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-color: #e4e4e7 !important;
   }
-  a { color: inherit !important; text-decoration: none !important; }
-  section, .break-avoid { break-inside: avoid; }
+  .resume-doc { max-width: none !important; margin: 0 !important; padding: 0 !important; }
+  .resume-doc a { text-decoration: none !important; }
+  .resume-doc .grad,
+  .resume-doc .grad-anim { -webkit-text-fill-color: #be123c !important; color: #be123c !important; background: none !important; }
+
+  /* the timeline rail/dots and cards become invisible scaffolding */
+  .resume-doc .pdf-rail { display: none !important; }
+  .resume-doc .card { border: none !important; padding: 0 !important; }
+  .resume-doc .pdf-pl { padding-left: 0 !important; }
+
+  /* tech "chips" collapse to inline · separated text */
+  .resume-doc .pdf-tech span { border: none !important; padding: 0 !important; font-size: 8.5pt !important; color: #52525b !important; }
+  .resume-doc .pdf-tech span:not(:last-child)::after { content: " · "; }
+
+  /* compact, continuous flow — only keep small blocks intact */
+  .resume-doc section { margin: 0 0 12pt 0 !important; padding: 0 !important; }
+  .resume-doc .pdf-section-gap { margin-top: 12pt !important; }
+  .resume-doc .pdf-item { break-inside: avoid; margin-bottom: 9pt !important; }
+  .resume-doc h1 { font-size: 21pt !important; margin: 0 !important; }
+  .resume-doc h2 { font-size: 12.5pt !important; margin: 0 0 6pt 0 !important; }
+  .resume-doc h3 { font-size: 10.5pt !important; }
+  .resume-doc h4 { font-size: 9.5pt !important; }
+  .resume-doc p, .resume-doc li, .resume-doc a, .resume-doc span { font-size: 9.5pt !important; line-height: 1.34 !important; }
+  .resume-doc ul { margin-top: 3pt !important; }
 }
