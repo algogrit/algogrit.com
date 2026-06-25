@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { experience } from '../data/experience';
 import { skillCategories } from '../data/skills';
 import { education } from '../data/education';
+import { community, communityNote, clients, trainingTopics, trainingNote, courseOutlinesUrl } from '../data/community';
 
 const contacts = [
   { label: 'algogrit@gmail.com', href: 'mailto:algogrit@gmail.com' },
@@ -133,6 +134,41 @@ const last = experience.length - 1;
           ))
         }
       </div>
+    </section>
+
+    <!-- Training -->
+    <section class="mt-16 pdf-section-gap">
+      <h2 class="display text-3xl font-bold mb-8">Training &amp; Consulting</h2>
+      <div class="pdf-item card rounded-2xl p-6">
+        <p class="text-sm text-zinc-600 dark:text-zinc-300">{trainingNote}</p>
+        <div class="mt-4 flex flex-wrap gap-1.5 pdf-tech">
+          {trainingTopics.map((t) => (
+            <span class="px-2 py-0.5 rounded-md text-xs bg-zinc-100 dark:bg-white/10 text-zinc-600 dark:text-zinc-300">{t}</span>
+          ))}
+        </div>
+        <p class="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+          <span class="font-semibold text-zinc-700 dark:text-zinc-200">Organizations trained:</span>
+          {' '}{clients.join(', ')}, and many others.
+        </p>
+        <a href={courseOutlinesUrl} class="mt-3 inline-block grad font-semibold text-sm">Course outlines: github.com/algogrit/Training</a>
+      </div>
+    </section>
+
+    <!-- Community & Speaking -->
+    <section class="mt-16 pdf-section-gap">
+      <h2 class="display text-3xl font-bold mb-8">Community &amp; Speaking</h2>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-5 max-w-2xl">{communityNote}</p>
+      <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-2">
+        {
+          community.map((c) => (
+            <li class="pdf-item flex flex-wrap items-baseline gap-x-2 text-sm">
+              <span class="grad font-semibold">{c.org}</span>
+              <span class="text-zinc-600 dark:text-zinc-300">— {c.role}</span>
+              {c.note && <span class="text-zinc-500 dark:text-zinc-400">({c.note})</span>}
+            </li>
+          ))
+        }
+      </ul>
     </section>
 
     <!-- Education -->

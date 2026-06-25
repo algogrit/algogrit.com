@@ -1,6 +1,7 @@
 ---
+import { clients } from '../data/community';
 const traits = ['Problem Solver', 'Detail-Oriented', 'Adaptable', 'Team Player', 'Fast Learner'];
-const trainedAt = ['Intel', 'Cisco', 'PayPal', 'JP Morgan Chase'];
+const trainedAt = clients.slice(0, 10);
 ---
 <section id="about" class="px-6 py-24">
   <div class="max-w-6xl mx-auto grid md:grid-cols-[1.2fr_1fr] gap-16 items-center">
@@ -31,6 +32,7 @@ const trainedAt = ['Intel', 'Cisco', 'PayPal', 'JP Morgan Chase'];
         <div class="text-xs uppercase tracking-widest text-zinc-400 mb-3">Trained engineers at</div>
         <div class="flex flex-wrap items-center gap-x-6 gap-y-2 display text-xl font-bold text-zinc-400 dark:text-zinc-500">
           {trainedAt.map((c) => <span>{c}</span>)}
+          <span class="text-base font-normal text-zinc-400 dark:text-zinc-500">&amp; many others</span>
         </div>
       </div>
     </div>

@@ -1,11 +1,15 @@
 ---
+import { courseOutlinesUrl } from '../data/community';
+
 // Inline line-icons (no emojis). 24x24 stroke icons.
 const items = [
   {
     title: 'Enterprise Training',
-    blurb: 'Custom technical training programs for engineering teams.',
-    points: ['Go, Rust, Python, JavaScript', 'Cloud-native development', 'Microservices architecture', 'Production-ready curriculum'],
+    blurb: 'Instructor-led & virtual trainings delivered globally.',
+    points: ['Go, Elixir, Rust, Ruby, Python, Java', 'Docker & Kubernetes (networking & security)', 'Apache Spark, DevOps, Cloud (AWS/GCP/Azure)', 'Production-ready curriculum'],
     icon: 'M12 14l9-5-9-5-9 5 9 5z M12 14l6.16-3.42a12 12 0 01.84 4.42 12 12 0 01-7 1 12 12 0 01-7-1 12 12 0 01.84-4.42L12 14z',
+    link: courseOutlinesUrl,
+    linkLabel: 'Course outlines ↗',
   },
   {
     title: 'Architecture & Consulting',
@@ -45,6 +49,11 @@ const items = [
                 </li>
               ))}
             </ul>
+            {it.link && (
+              <a href={it.link} target="_blank" rel="noopener noreferrer" class="mt-5 inline-block grad font-semibold text-sm hover:underline">
+                {it.linkLabel}
+              </a>
+            )}
           </div>
         ))
       }

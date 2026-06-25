@@ -7,6 +7,8 @@ import About from '../components/About.astro';
 import Expertise from '../components/Expertise.astro';
 import Experience from '../components/Experience.astro';
 import Skills from '../components/Skills.astro';
+import Talks from '../components/Talks';
+import Community from '../components/Community.astro';
 import RecentWritings from '../components/RecentWritings';
 import ResumeCTA from '../components/ResumeCTA.astro';
 import Contact from '../components/Contact.astro';
@@ -21,6 +23,8 @@ import Footer from '../components/Footer.astro';
   <Expertise />
   <Experience />
   <Skills />
+  <Talks client:visible />
+  <Community />
   <RecentWritings client:visible />
   <ResumeCTA />
   <Contact />
