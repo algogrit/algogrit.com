@@ -1,5 +1,5 @@
 /* ============================================================
-   DESIGN SYSTEM — algogrit.com
+   DESIGN SYSTEM - algogrit.com
    Bold/vibrant identity: Space Grotesk display + Inter body,
    4-stop amber→rose→fuchsia→violet gradient, flat glass surfaces.
    ============================================================ */
@@ -141,7 +141,7 @@ html.dark .card { background: rgba(255, 255, 255, .02); border-color: rgba(255, 
 }
 
 /* ============================================================
-   PRINT — /resume only. Same layout as the site, flattened to a
+   PRINT - /resume only. Same layout as the site, flattened to a
    compact, continuous light document (no per-section page breaks).
    ============================================================ */
 @media print {
@@ -171,7 +171,7 @@ html.dark .card { background: rgba(255, 255, 255, .02); border-color: rgba(255, 
   .resume-doc .pdf-tech span { border: none !important; padding: 0 !important; font-size: 8.5pt !important; color: #52525b !important; }
   .resume-doc .pdf-tech span:not(:last-child)::after { content: " · "; }
 
-  /* compact, continuous flow — only keep small blocks intact */
+  /* compact, continuous flow - only keep small blocks intact */
   .resume-doc section { margin: 0 0 12pt 0 !important; padding: 0 !important; }
   .resume-doc .pdf-section-gap { margin-top: 12pt !important; }
   .resume-doc .pdf-item { break-inside: avoid; margin-bottom: 9pt !important; }

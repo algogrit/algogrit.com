@@ -43,7 +43,7 @@ const initial = [...allItems, ...allItems];
   <div class="max-w-6xl mx-auto px-6">
     <h2 class="display text-5xl md:text-6xl font-bold mb-3 reveal">Skills.</h2>
     <p id="skill-hint" class="text-zinc-500 dark:text-zinc-400 mb-10 reveal">
-      Languages, frameworks, infrastructure &amp; platforms — tap a category to filter.
+      Languages, frameworks, infrastructure &amp; platforms.
     </p>
   </div>
 
@@ -54,7 +54,7 @@ const initial = [...allItems, ...allItems];
     <!-- sizer: gives the wrapper height (both layers are absolute) -->
     <div class="h-12 invisible" aria-hidden="true"></div>
 
-    <!-- base silhouettes — visible at the edges only -->
+    <!-- base silhouettes - visible at the edges only -->
     <div class="absolute inset-0 flex items-center" style={BASE_STYLE} aria-hidden="true">
       <div id="skill-track-base" class="flex gap-14 w-max marquee items-center opacity-60 dark:opacity-70 will-change-transform">
         {
@@ -77,7 +77,7 @@ const initial = [...allItems, ...allItems];
     >
     </div>
 
-    <!-- colour spotlight — visible through the centre only -->
+    <!-- colour spotlight - visible through the centre only -->
     <div class="absolute inset-0 flex items-center pointer-events-none" style={SPOTLIGHT} aria-hidden="true">
       <div id="skill-track-color" class="flex gap-14 w-max marquee items-center will-change-transform">
         {
@@ -145,8 +145,8 @@ const initial = [...allItems, ...allItems];
       color.innerHTML = build(SEP_COLOR, COLOR_ICON);
       if (hint) {
         hint.textContent = cat
-          ? `${cat.name} — ${cat.count} skills · tap again to show all`
-          : 'Languages, frameworks, infrastructure & platforms — tap a category to filter.';
+          ? `${cat.name} · ${cat.count} skills · tap again to show all`
+          : 'Languages, frameworks, infrastructure & platforms.';
       }
     }
 

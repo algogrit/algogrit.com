@@ -15,7 +15,7 @@ const last = experience.length - 1;
       {
         experience.map((job, i) => (
           <div class="relative pl-8 reveal" style={`--d:${Math.min(i, 4) * 60}ms`}>
-            {/* connector line — stops at the last dot */}
+            {/* connector line - stops at the last dot */}
             {i !== last && (
               <span
                 class="absolute left-0 -translate-x-1/2 top-7 w-px bg-zinc-200 dark:bg-white/10"
@@ -111,3 +111,20 @@ const last = experience.length - 1;
     </div>
   </div>
 </section>
+
+<script is:inline>
+  // Keep the clicked role under the pointer: when opening one item collapses a
+  // taller item above it, the page would shift up. Compensate the scroll so the
+  // summary stays at the same viewport position.
+  (() => {
+    document.querySelectorAll('#experience details > summary').forEach((sum) => {
+      sum.addEventListener('click', () => {
+        const before = sum.getBoundingClientRect().top;
+        requestAnimationFrame(() => {
+          const delta = sum.getBoundingClientRect().top - before;
+          if (delta) window.scrollBy({ top: delta, left: 0, behavior: 'instant' });
+        });
+      });
+    });
+  })();
+</script>

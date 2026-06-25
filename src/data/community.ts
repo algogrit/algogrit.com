@@ -32,6 +32,6 @@ export const trainingTopics = [
 ];
 
 export const trainingNote =
-  'Instructor-led and virtual trainings delivered globally — across Asia, the Americas, Europe, Africa and Australia.';
+  'Instructor-led and virtual trainings delivered globally, across Asia, the Americas, Europe, Africa and Australia.';
 
 export const courseOutlinesUrl = 'https://github.com/algogrit/Training';

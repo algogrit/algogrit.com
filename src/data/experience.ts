@@ -182,7 +182,7 @@ export const experience: ExperienceItem[] = [
       {
         name: 'Lifelogger',
         description:
-          'Built an interactive app using Elm — a highly interactive 3D visual app using the reddit API as a proof of concept. Deployed on Heroku.',
+          'Built an interactive app using Elm: a highly interactive 3D visual app using the reddit API as a proof of concept. Deployed on Heroku.',
         technologies: ['Elm', 'Heroku'],
       },
     ],
@@ -201,7 +201,7 @@ export const experience: ExperienceItem[] = [
       {
         name: 'Automate',
         description:
-          'Main rails developer on the Automate team — the product which lets you run Selenium/JS tests across multiple Browser/OS combinations. Worked to stabilise the application over the course of 2 months.',
+          'Main rails developer on the Automate team, the product which lets you run Selenium/JS tests across multiple Browser/OS combinations. Worked to stabilise the application over the course of 2 months.',
         technologies: ['Ruby on Rails', 'Node.js', 'Selenium', 'Sphinx', 'MySQL', 'jQuery'],
       },
       {
@@ -217,7 +217,7 @@ export const experience: ExperienceItem[] = [
     position: 'Consultant',
     period: 'May 2012 – Sep 2013',
     description:
-      'Worked with senior developers — practising agile, TDD, pair programming and extreme programming methodologies.',
+      'Worked with senior developers, practising agile, TDD, pair programming and extreme programming methodologies.',
     achievements: [
       'Learnt a lot of coding techniques, including refactoring and writing clean readable code',
       'Built an extensive set of visualizations, including map-based ones, to chart sales distribution across a country',
