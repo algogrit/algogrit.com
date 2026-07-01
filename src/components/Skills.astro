@@ -21,10 +21,9 @@ const cats = skillCategories.map((c) => ({
 //  - COLOR: real brand colours, masked to a centre "spotlight".
 // Both layers are the SAME size, so the silhouette and colour copy of an icon
 // overlap perfectly through the spotlight crossfade (clean gray→colour fade).
-// NOTE: trailing `mr-14` (not flex `gap`) on every child so each duplicated
-// copy — including its trailing gap — is exactly half the track width. That
-// makes the marquee's translateX(-50%) land on a seamless repeat boundary
-// (a flex `gap` leaves the copy-to-copy junction half a gap short → stutter).
+// NOTE: trailing `mr-14` (not flex `gap`) on every child so each repeated
+// set includes its trailing gap. The client script measures one set and moves
+// the track by exactly that width for a seamless loop.
 const BASE_ICON = 'h-9 w-9 object-contain brightness-0 dark:invert mr-14';
 const COLOR_ICON = 'h-9 w-9 object-contain mr-14';
 // Complementary masks so the two synced layers never overlap (no ghosting):
@@ -41,7 +40,7 @@ const allItems = cats.flatMap((c) => [
   ...c.icons.map((ic) => ({ type: 'icon', ...ic })),
   { type: 'sep' },
 ]);
-const initial = [...allItems, ...allItems];
+const initialSets = [allItems, allItems, allItems];
 ---
 <section id="skills" class="py-24">
   <div class="max-w-6xl mx-auto px-6">
@@ -62,13 +61,17 @@ const initial = [...allItems, ...allItems];
     <div class="absolute inset-0 flex items-center" style={BASE_STYLE} aria-hidden="true">
       <div id="skill-track-base" class="flex w-max marquee items-center opacity-60 dark:opacity-70 will-change-transform">
         {
-          initial.map((it) =>
-            it.type === 'sep' ? (
-              <span class="h-1.5 w-1.5 rounded-full bg-zinc-400/70 dark:bg-zinc-500 shrink-0 mr-14" />
-            ) : (
-              <img src={it.src} alt="" title={it.name} loading="lazy" class={BASE_ICON} />
-            )
-          )
+          initialSets.map((set) => (
+            <div class="marquee-set flex shrink-0 items-center" data-marquee-set>
+              {set.map((it) =>
+                it.type === 'sep' ? (
+                  <span class="h-1.5 w-1.5 rounded-full bg-zinc-400/70 dark:bg-zinc-500 shrink-0 mr-14" />
+                ) : (
+                  <img src={it.src} alt="" title={it.name} loading="lazy" class={BASE_ICON} />
+                )
+              )}
+            </div>
+          ))
         }
       </div>
     </div>
@@ -85,13 +88,17 @@ const initial = [...allItems, ...allItems];
     <div class="absolute inset-0 flex items-center pointer-events-none" style={SPOTLIGHT} aria-hidden="true">
       <div id="skill-track-color" class="flex w-max marquee items-center will-change-transform">
         {
-          initial.map((it) =>
-            it.type === 'sep' ? (
-              <span class="h-1.5 w-1.5 rounded-full grad-bg shrink-0 mr-14" />
-            ) : (
-              <img src={it.src} alt="" title={it.name} loading="lazy" class={COLOR_ICON} />
-            )
-          )
+          initialSets.map((set) => (
+            <div class="marquee-set flex shrink-0 items-center" data-marquee-set>
+              {set.map((it) =>
+                it.type === 'sep' ? (
+                  <span class="h-1.5 w-1.5 rounded-full grad-bg shrink-0 mr-14" />
+                ) : (
+                  <img src={it.src} alt="" title={it.name} loading="lazy" class={COLOR_ICON} />
+                )
+              )}
+            </div>
+          ))
         }
       </div>
     </div>
@@ -129,7 +136,19 @@ const initial = [...allItems, ...allItems];
 
     const SEP_BASE = '<span class="h-1.5 w-1.5 rounded-full bg-zinc-400/70 dark:bg-zinc-500 shrink-0 mr-14"></span>';
     const SEP_COLOR = '<span class="h-1.5 w-1.5 rounded-full grad-bg shrink-0 mr-14"></span>';
-    const img = (s, cls) => `<img src="${s.src}" alt="" title="${s.name}" loading="lazy" class="${cls}">`;
+    const escapeAttr = (value) =>
+      String(value).replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      })[char]);
+    const img = (s, cls) =>
+      `<img src="${escapeAttr(s.src)}" alt="" title="${escapeAttr(s.name)}" loading="lazy" class="${cls}">`;
+
+    let baseSetHtml = '';
+    let colorSetHtml = '';
 
     // single category → just its icons; "all" → icons grouped by a dot separator
     const itemsFor = (key) => {
@@ -139,14 +158,44 @@ const initial = [...allItems, ...allItems];
         : cats.flatMap((c) => [...c.icons.map((ic) => ({ type: 'icon', ...ic })), { type: 'sep' }]);
     };
 
+    const setMarkup = (list, sep, cls) =>
+      `<div class="marquee-set flex shrink-0 items-center" data-marquee-set>${list
+        .map((it) => (it.type === 'sep' ? sep : img(it, cls)))
+        .join('')}</div>`;
+
+    const restart = (track) => {
+      track.style.animation = 'none';
+      track.offsetWidth;
+      track.style.animation = '';
+    };
+
+    const fillTrack = (track, setHtml) => {
+      track.innerHTML = setHtml;
+      const set = track.querySelector('[data-marquee-set]');
+      if (!set) return;
+
+      const setWidth = set.getBoundingClientRect().width;
+      const viewportWidth = track.parentElement?.getBoundingClientRect().width || window.innerWidth;
+      if (!setWidth || !viewportWidth) return;
+
+      const repeats = Math.max(2, Math.ceil((viewportWidth + setWidth) / setWidth) + 1);
+      track.innerHTML = setHtml.repeat(repeats);
+      track.style.setProperty('--marquee-distance', `${setWidth}px`);
+      restart(track);
+    };
+
+    const syncTracks = () => {
+      if (!baseSetHtml || !colorSetHtml) return;
+      fillTrack(base, baseSetHtml);
+      fillTrack(color, colorSetHtml);
+    };
+
     function render(key) {
+      const cat = key ? cats.find((c) => c.key === key) : null;
       const list = itemsFor(key);
-      const build = (sep, cls) => {
-        const html = list.map((it) => (it.type === 'sep' ? sep : img(it, cls))).join('');
-        return html + html + (list.length < 10 ? html + html : '');
-      };
-      base.innerHTML = build(SEP_BASE, BASE_ICON);
-      color.innerHTML = build(SEP_COLOR, COLOR_ICON);
+      baseSetHtml = setMarkup(list, SEP_BASE, BASE_ICON);
+      colorSetHtml = setMarkup(list, SEP_COLOR, COLOR_ICON);
+      syncTracks();
       if (hint) {
         hint.textContent = cat
           ? `${cat.name} · ${cat.count} skills · tap again to show all`
@@ -166,5 +215,8 @@ const initial = [...allItems, ...allItems];
         });
       });
     });
+
+    render(null);
+    window.addEventListener('resize', syncTracks);
   })();
 </script>

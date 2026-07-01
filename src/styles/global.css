@@ -121,10 +121,10 @@ html.dark .card { background: rgba(255, 255, 255, .02); border-color: rgba(255, 
 }
 
 /* ---- marquee ---- */
-.marquee { animation: marquee 30s linear infinite; }
+.marquee { --marquee-distance: 50%; animation: marquee 30s linear infinite; }
 @keyframes marquee {
   from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  to { transform: translateX(calc(var(--marquee-distance) * -1)); }
 }
 /* pause the skills marquee on hover so icons are tappable */
 .marquee-pausable:hover .marquee { animation-play-state: paused; }
